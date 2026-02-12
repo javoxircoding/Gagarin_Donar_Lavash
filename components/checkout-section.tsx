@@ -187,22 +187,39 @@ export function CheckoutSection() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="phone" className="text-card-foreground">
-                Telefon raqamingiz
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="+998 90 123 45 67"
-                {...register("phone")}
-                aria-invalid={!!errors.phone}
-              />
-              {errors.phone && (
-                <p className="text-xs text-destructive">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
+  <Label htmlFor="phone" className="text-card-foreground">
+    Telefon raqamingiz
+  </Label>
+  <div className="relative">
+    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+      +998
+    </span>
+    <Input
+      id="phone"
+      type="tel"
+      placeholder="90 123 45 67"
+      className="pl-14" // +998 uchun joy ochadi
+      {...register("phone", {
+        onChange: (e) => {
+          // Faqat raqamlarni qoldirish va formatlash mantiqi:
+          let val = e.target.value.replace(/\D/g, "");
+          if (val.length > 9) val = val.substring(0, 9);
+          
+          // Formatlash: XX XXX XX XX
+          let formatted = val;
+          if (val.length > 2) formatted = val.substring(0, 2) + " " + val.substring(2);
+          if (val.length > 5) formatted = formatted.substring(0, 6) + " " + formatted.substring(6);
+          if (val.length > 7) formatted = formatted.substring(0, 9) + " " + formatted.substring(9);
+          
+          e.target.value = formatted;
+        }
+      })}
+    />
+  </div>
+  {errors.phone && (
+    <p className="text-xs text-destructive">{errors.phone.message}</p>
+  )}
+</div>
 
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="address" className="text-card-foreground">
