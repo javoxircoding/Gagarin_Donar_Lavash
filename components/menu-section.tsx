@@ -17,10 +17,10 @@ export function MenuSection() {
     <section id="menu" className="mx-auto max-w-7xl px-4 py-16 md:px-6">
       <div className="mb-10 text-center">
         <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-          Our Menu
+          Bizning menyu
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Pick your favorites and build the perfect order
+          Eng sara lazzatlarni tanlab, o'z buyurtmangizni yig'ing
         </p>
       </div>
 

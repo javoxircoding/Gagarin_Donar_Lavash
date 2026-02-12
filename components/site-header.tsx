@@ -11,11 +11,11 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <a href="#" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <Flame className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-10 w-10">
+            <img className=" border-primary rounded-full" src="/image copy.png" alt="Logo" />
           </div>
           <span className="text-xl font-bold tracking-tight text-foreground">
-            BiteBurner
+            Gagarin Donar
           </span>
         </a>
 

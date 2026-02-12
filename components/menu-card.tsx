@@ -25,7 +25,7 @@ export function MenuCard({ item }: { item: MenuItem }) {
             {item.name}
           </h3>
           <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-bold text-primary">
-            ${item.price.toFixed(2)}
+            {item.price.toFixed(3)} so'm
           </span>
         </div>
         <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
@@ -37,7 +37,7 @@ export function MenuCard({ item }: { item: MenuItem }) {
           onClick={() => addItem(item)}
         >
           <Plus className="h-4 w-4" />
-          Add to Cart
+          Savatga qo‘shish
         </Button>
       </div>
     </article>
