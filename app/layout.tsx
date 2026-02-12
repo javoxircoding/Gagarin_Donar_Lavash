@@ -18,8 +18,11 @@ const _spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: "BiteBurner — Fast Food Delivery",
-  description:"Handcrafted burgers, crispy sides, and ice-cold drinks delivered to your door in minutes.",
+  title: "Gagarin Donar — Online Buyurtma",
+  description: "Gagarindagi eng mazali lavash va donarlar. Tezkor yetkazib berish va sifatli xizmat!",
+  icons: {
+    icon: "/logo.png", // Nuqtani olib tashladim, public papkasidagi rasm nomi bilan bir xil bo'lsin
+  },
 }
 
 export const viewport: Viewport = {
