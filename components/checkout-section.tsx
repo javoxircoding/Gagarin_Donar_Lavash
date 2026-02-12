@@ -12,13 +12,14 @@ import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/lib/cart-context"
 import Image from "next/image"
 
+// Validatsiya qoidalarini o'zbekchaga o'giramiz
 const checkoutSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  name: z.string().min(2, "Ismingiz kamida 2 ta harfdan iborat bo'lishi kerak"),
   phone: z
     .string()
-    .min(7, "Enter a valid phone number")
-    .regex(/^[+\d\s()-]+$/, "Enter a valid phone number"),
-  address: z.string().min(5, "Enter a complete address"),
+    .min(9, "Telefon raqamingizni to'liq kiriting")
+    .regex(/^[+\d\s()-]+$/, "Faqat raqam kiritishingiz mumkin"),
+  address: z.string().min(5, "Yetkazib berish manzilini to'liq kiriting"),
   notes: z.string().optional(),
 })
 
@@ -61,7 +62,7 @@ export function CheckoutSection() {
 
       if (!response.ok) {
         const err = await response.json()
-        throw new Error(err.error || "Failed to place order")
+        throw new Error(err.error || "Buyurtma yuborishda xatolik yuz berdi")
       }
 
       setStatus("success")
@@ -71,27 +72,25 @@ export function CheckoutSection() {
     } catch (err) {
       setStatus("error")
       setErrorMessage(
-        err instanceof Error ? err.message : "Something went wrong"
+        err instanceof Error ? err.message : "Noma'lum xatolik yuz berdi"
       )
     }
   }
 
+  // Buyurtma muvaffaqiyatli yakunlanganda chiqadigan oyna
   if (status === "success") {
     return (
-      <section
-        id="checkout"
-        className="mx-auto max-w-2xl px-4 py-16 text-center md:px-6"
-      >
+      <section id="checkout" className="mx-auto max-w-2xl px-4 py-16 text-center md:px-6">
         <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card p-10">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle2 className="h-8 w-8 text-green-600" />
           </div>
           <h2 className="text-2xl font-bold text-card-foreground">
-            Order Placed!
+            Buyurtmangiz qabul qilindi!
           </h2>
           <p className="text-muted-foreground">
-            Your order has been sent and you will receive a confirmation soon.
-            Thank you for choosing BiteBurner!
+            Buyurtmangiz yuborildi. Operatorimiz tez orada siz bilan bog'lanadi.
+            Gagarin Donarni tanlaganingiz uchun rahmat!
           </p>
         </div>
       </section>
@@ -102,25 +101,25 @@ export function CheckoutSection() {
     <section id="checkout" className="mx-auto max-w-4xl px-4 py-16 md:px-6">
       <div className="mb-10 text-center">
         <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-          Checkout
+          Buyurtmani rasmiylashtirish
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Fill in your details and we will deliver to your door
+          Ma'lumotlaringizni kiriting va biz taomlarni eshigingizgacha yetkazib beramiz
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-5">
-        {/* Order Summary */}
+        {/* Order Summary - Buyurtma hisobi */}
         <div className="order-2 lg:order-1 lg:col-span-2">
           <div className="rounded-2xl border border-border bg-card p-6">
             <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-card-foreground">
               <ShoppingBag className="h-5 w-5" />
-              Order Summary
+              Sizning buyurtmangiz
             </h3>
 
             {items.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                Your cart is empty. Add items from the menu above.
+                Savatingiz hozircha bo'sh. Menyu bo'limidan taom qo'shing.
               </p>
             ) : (
               <>
@@ -145,7 +144,7 @@ export function CheckoutSection() {
                         </p>
                       </div>
                       <span className="text-sm font-semibold text-card-foreground">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {(item.price * item.quantity).toLocaleString()} so'm
                       </span>
                     </div>
                   ))}
@@ -153,10 +152,10 @@ export function CheckoutSection() {
                 <Separator className="my-4" />
                 <div className="flex items-center justify-between">
                   <span className="text-base font-semibold text-card-foreground">
-                    Total
+                    Jami:
                   </span>
                   <span className="text-xl font-bold text-primary">
-                    ${totalPrice.toFixed(2)}
+                    {totalPrice.toLocaleString()} so'm
                   </span>
                 </div>
               </>
@@ -164,7 +163,7 @@ export function CheckoutSection() {
           </div>
         </div>
 
-        {/* Form */}
+        {/* Form - Ma'lumotlar kiritish */}
         <div className="order-1 lg:order-2 lg:col-span-3">
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -172,11 +171,11 @@ export function CheckoutSection() {
           >
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="name" className="text-card-foreground">
-                Full Name
+                To'liq ismingiz
               </Label>
               <Input
                 id="name"
-                placeholder="John Doe"
+                placeholder="Masalan: Azizbek"
                 {...register("name")}
                 aria-invalid={!!errors.name}
               />
@@ -189,12 +188,12 @@ export function CheckoutSection() {
 
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="phone" className="text-card-foreground">
-                Phone Number
+                Telefon raqamingiz
               </Label>
               <Input
                 id="phone"
                 type="tel"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+998 90 123 45 67"
                 {...register("phone")}
                 aria-invalid={!!errors.phone}
               />
@@ -207,11 +206,11 @@ export function CheckoutSection() {
 
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="address" className="text-card-foreground">
-                Delivery Address
+                Yetkazib berish manzili
               </Label>
               <Input
                 id="address"
-                placeholder="123 Main Street, Apt 4B"
+                placeholder="Mahalla, ko'cha, uy raqami..."
                 {...register("address")}
                 aria-invalid={!!errors.address}
               />
@@ -224,12 +223,12 @@ export function CheckoutSection() {
 
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="notes" className="text-card-foreground">
-                Order Notes{" "}
-                <span className="text-muted-foreground">(optional)</span>
+                Qo'shimcha eslatma{" "}
+                <span className="text-muted-foreground">(ixtiyoriy)</span>
               </Label>
               <Input
                 id="notes"
-                placeholder="Extra napkins, ring the doorbell..."
+                placeholder="Masalan: Domofon kodi 123 yoki eshik oldida qoldiring"
                 {...register("notes")}
               />
             </div>
@@ -249,12 +248,12 @@ export function CheckoutSection() {
               {status === "loading" ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Placing Order...
+                  Yuborilmoqda...
                 </>
               ) : (
                 <>
                   <Send className="h-4 w-4" />
-                  Place Order
+                  Buyurtma berish
                 </>
               )}
             </Button>

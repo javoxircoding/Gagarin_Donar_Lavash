@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
     if (!body.name || !body.phone || !body.address || !body.items?.length) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Ma'lumotlar to'liq emas" },
         { status: 400 }
       )
     }
@@ -31,29 +31,31 @@ export async function POST(request: Request) {
 
     if (!botToken || !chatId) {
       return NextResponse.json(
-        { error: "Telegram not configured" },
+        { error: "Telegram sozlanmagan" },
         { status: 500 }
       )
     }
 
+    // Taomlar ro'yxatini shakllantirish (so'mda chiqarish)
     const itemsList = body.items
       .map(
         (item) =>
-          `  - ${item.name} x${item.quantity} — $${(item.price * item.quantity).toFixed(2)}`
+          `  - ${item.name} x${item.quantity} — ${(item.price * item.quantity).toLocaleString()} so'm`
       )
       .join("\n")
 
-    const message = `🍔 *NEW ORDER*
+    // Telegram xabar matni (Gagarin Donar uslubida)
+    const message = `🚀 *YANGI BUYURTMA — GAGARIN DONAR*
 
-👤 *Customer:* ${escapeMarkdown(body.name)}
-📞 *Phone:* ${escapeMarkdown(body.phone)}
-📍 *Address:* ${escapeMarkdown(body.address)}
-${body.notes ? `📝 *Notes:* ${escapeMarkdown(body.notes)}` : ""}
+👤 *Mijoz:* ${escapeMarkdown(body.name)}
+📞 *Telefon:* ${escapeMarkdown(body.phone)}
+📍 *Manzil:* ${escapeMarkdown(body.address)}
+${body.notes ? `📝 *Eslatma:* ${escapeMarkdown(body.notes)}` : ""}
 
-🛒 *Items:*
+🛒 *Taomlar:*
 ${itemsList}
 
-💰 *Total: $${body.total.toFixed(2)}*`
+💰 *Jami summa: ${body.total.toLocaleString('ru-RU')} so'm*`
 
     const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`
 
@@ -69,22 +71,23 @@ ${itemsList}
 
     if (!response.ok) {
       const errorData = await response.text()
-      console.error("Telegram API error:", errorData)
+      console.error("Telegram API xatosi:", errorData)
       return NextResponse.json(
-        { error: "Failed to send order notification" },
+        { error: "Xabarni yuborishda xatolik yuz berdi" },
         { status: 500 }
       )
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("Order processing error:", error)
+    console.error("Buyurtma xatosi:", error)
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Server ichki xatosi" },
       { status: 500 }
     )
   }
 }
+
 
 function escapeMarkdown(text: string): string {
   return text.replace(/[_*[\]()~`>#+\-=|{}.!]/g, "\\$&")
