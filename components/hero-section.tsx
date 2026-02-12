@@ -5,7 +5,7 @@ export function HeroSection() {
   return (
     <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden md:min-h-[70vh]">
       <Image
-        src="/images/hero-bg.jpg"
+        src="/macdonalds.jpg"
         alt="Delicious fast food spread"
         fill
         className="object-cover"

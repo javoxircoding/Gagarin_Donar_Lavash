@@ -19,8 +19,7 @@ const _spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "BiteBurner — Fast Food Delivery",
-  description:
-    "Handcrafted burgers, crispy sides, and ice-cold drinks delivered to your door in minutes.",
+  description:"Handcrafted burgers, crispy sides, and ice-cold drinks delivered to your door in minutes.",
 }
 
 export const viewport: Viewport = {
